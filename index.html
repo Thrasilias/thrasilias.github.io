@@ -1,81 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Michael C - Personal Landing Page</title>
+    <title>About Me & Projects</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #e6e6e6;
-            text-align: center;
+            background-color: #f8f9fa; /* Light gray background color */
         }
-
         header {
-            background-color: #1a1a1a;
-            color: #ffcc00;
-            padding: 1em;
-        }
-
-        section {
-            max-width: 800px;
-            margin: 2em auto;
-            padding: 1em;
-            background-color: white;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        h1 {
-            color: #ffcc00;
+        section {
+            padding: 20px;
+            background-color: #fff; /* White background color for sections */
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         h2 {
-            color: #1a1a1a;
-        }
-
-        p {
             color: #333;
-            line-height: 1.6;
+            border-bottom: 2px solid #333; /* Add border bottom to section titles */
+            padding-bottom: 10px;
+            margin-bottom: 20px; /* Add space below section titles */
         }
-
-        a {
-            color: #4285f4;
+        .project {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+            transition: all 0.3s ease; /* Smooth transition on hover */
+        }
+        .project:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .landscape-description {
+            margin-top: 20px;
+        }
+        @media only screen and (max-width: 600px) {
+            header {
+                padding: 10px;
+            }
+            section {
+                padding: 10px;
+            }
+        }
+        .project-link {
+            color: #007bff; /* Blue color for links */
             text-decoration: none;
-            font-weight: bold;
+            margin-left: 10px; /* Add space between project title and link */
         }
-
-        footer {
-            background-color: #1a1a1a;
-            color: #ffcc00;
-            padding: 1em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        .project:hover {
+            background-color: #f0f0f0; /* Light gray background color on hover */
         }
     </style>
 </head>
-
 <body>
-
     <header>
-        <h1>Michael C</h1>
+        <h1>About Me & Projects</h1>
     </header>
-
     <section>
         <h2>About Me</h2>
-        <p>Welcome to my personal space! I'm Michael C, a 29-year-old based in Germany. Professionally, I navigate the world of technology, but my heart finds joy in the simple wonders of life.</p>
-        <p>Married to the wonderful Sophia, our journey includes the delightful adventure of parenting a lovely daughter. Beyond the digital realm, I have a deep affection for red pandas, and my spirit resonates with the enchanting landscapes of Austria.</p>
-        <p>Join me as I embrace the beauty in every moment and share the things that bring happiness to my world!</p>
+        <p>Hi, I'm Michael! I'm passionate about coding and building cool projects. Here's a bit about me and some projects I've worked on.</p>
     </section>
-
-    <footer>
-        <p>Designed with ❤️ in Germany | 🇦🇹 Austria Fan | Discord: <a href="https://discord.com/users/thrasilias" target="_blank">thrasilias</a></p>
-    </footer>
-
+    <section>
+        <h2>Projects</h2>
+        <div class="project">
+            <h3>Radio Player <a href="https://thrasilias.github.io/radio-player" class="project-link">(Click Here)</a></h3>
+            <p>A web radio application that allows users to listen to their favorite stations.</p>
+        </div>
+        <div class="project">
+            <h3>Moderation Tools <a href="https://thrasilias.github.io/reports.html" class="project-link">(Click Here)</a></h3>
+            <p>A tool for making a report form used on a GTA-Online Modding community.</p>
+        </div>
+        <div class="project">
+            <h3>Minetopia Build Utils <a href="https://thrasilias.github.io/minetopia-build-utils" class="project-link">(Click Here)</a></h3>
+            <p>Utilities for building and managing projects in the Minetopia environment.</p>
+        </div>
+        <div class="project">
+            <h3>Minetopia Resourcepacks <a href="https://thrasilias.github.io/minetopia-resourcepacks" class="project-link">(Click Here)</a></h3>
+            <p>Collection of resource packs for Minetopia projects, enhancing the visual experience.</p>
+        </div>
+    </section>
 </body>
-
 </html>
