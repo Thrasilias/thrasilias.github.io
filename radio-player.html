@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Dutch Radio Player</title>
+  <title>Nederlandse Radio Player</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -98,7 +97,7 @@
 <body>
 
   <div class="container tablet-container">
-    <h1 class="tablet-header">Dutch Radio Player</h1>
+    <h1 class="tablet-header">Nederlandse Radio Player</h1>
 
     <div class="row justify-content-center">
       <div class="col-md-12">
@@ -112,26 +111,26 @@
       <!-- Radio stations will be appended here dynamically -->
     </div>
 
-    <div class="notification" id="notification">Now Playing: <span id="notificationText"></span></div>
+    <div class="notification" id="notification">Nu aan het spelen: <span id="notificationText"></span></div>
 
     <!-- Bootstrap JS and jQuery (required for the Bootstrap JS components) -->
     <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      // Function to fetch radio stations from JSON file
+      // Functie om radiostations op te halen uit JSON-bestand
       async function fetchRadioStations() {
         try {
           const response = await fetch('https://thrasilias.github.io/radio-stations.json');
           const data = await response.json();
           return data;
         } catch (error) {
-          console.error('Error fetching radio stations:', error);
+          console.error('Fout bij het ophalen van radiostations:', error);
           return [];
         }
       }
 
-      // Function to play radio station
+      // Functie om radio af te spelen
       function playRadio(stationNumber) {
         const radioStations = document.getElementById("radioStations");
         const radioPlayer = document.getElementById("radioPlayer");
@@ -144,17 +143,17 @@
         radioPlayer.src = station.streamUrl;
         radioPlayer.play();
 
-        // Show notification
+        // Toon melding
         notificationText.textContent = station.name;
         notification.style.display = "block";
 
-        // Hide notification after 3 seconds
+        // Verberg melding na 3 seconden
         setTimeout(() => {
           notification.style.display = "none";
         }, 3000);
       }
 
-      // Call the function to fetch and play radio stations on page load
+      // Functie om radio te initialiseren
       async function initializeRadio() {
         const radioStations = await fetchRadioStations();
         const radioList = document.getElementById("radioStations");
@@ -173,10 +172,10 @@
         });
       }
 
-      // Call the function to initialize radio on page load
+      // Roep de functie aan om radio te initialiseren bij het laden van de pagina
       initializeRadio();
 
-      // Your existing event listeners for volume control
+      // Bestaande event listeners voor volumeregeling
       document.getElementById("volumeButton").addEventListener("click", () => {
         const radioPlayer = document.getElementById("radioPlayer");
         radioPlayer.volume = radioPlayer.volume === 0 ? 1 : 0;
@@ -191,5 +190,4 @@
   </div>
 
 </body>
-
 </html>

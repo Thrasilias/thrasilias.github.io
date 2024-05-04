@@ -33,5 +33,30 @@
         "name": "NPO Radio 1",
         "streamUrl": "URL_TO_STREAM_10",
         "channel_icon": "https://example.com/npotadio1_icon.png"
+    },
+    {
+        "name": "NPO Radio 2",
+        "streamUrl": "URL_TO_STREAM_11",
+        "channel_icon": "https://example.com/npotadio2_icon.png"
+    },
+    {
+        "name": "NPO 3FM",
+        "streamUrl": "URL_TO_STREAM_12",
+        "channel_icon": "https://example.com/npo3fm_icon.png"
+    },
+    {
+        "name": "NPO Radio 4",
+        "streamUrl": "URL_TO_STREAM_13",
+        "channel_icon": "https://example.com/npotadio4_icon.png"
+    },
+    {
+        "name": "NPO Radio 5",
+        "streamUrl": "URL_TO_STREAM_14",
+        "channel_icon": "https://example.com/npotadio5_icon.png"
+    },
+    {
+        "name": "NPO Radio 6",
+        "streamUrl": "URL_TO_STREAM_15",
+        "channel_icon": "https://example.com/npotadio6_icon.png"
     }
 ]
