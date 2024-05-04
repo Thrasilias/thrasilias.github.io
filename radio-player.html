@@ -185,7 +185,18 @@
       document.getElementById("volumeSlider").addEventListener("input", () => {
         const radioPlayer = document.getElementById("radioPlayer");
         radioPlayer.volume = document.getElementById("volumeSlider").value;
+        // Save volume to local storage
+        localStorage.setItem('volumeLevel', document.getElementById("volumeSlider").value);
       });
+
+      // Retrieve volume level from local storage on page load
+      window.onload = function() {
+        const volumeLevel = localStorage.getItem('volumeLevel');
+        if (volumeLevel) {
+          document.getElementById("volumeSlider").value = volumeLevel;
+          document.getElementById("radioPlayer").volume = volumeLevel;
+        }
+      };
     </script>
 
   </div>
