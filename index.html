@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VOC Vitamine Winkel</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJZgP8nX2Z7aGhNlAAiW90I0kEfljvsJlptzYHXYLgJ9f33e7G8fs6Ltc2Iu" crossorigin="anonymous">
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2c3e50; /* Donkerblauwe achtergrond */
-            color: #ecf0f1; /* Lichte tekstkleur */
+            background-color: #2c3e50;
+            color: #ecf0f1;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -29,25 +33,19 @@
             margin-bottom: 20px;
         }
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 0 auto 20px;
-            max-width: 900px;
-            background: #34495e; /* Donkergrijze achtergrond voor tabel */
+        .table {
+            background: #34495e;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
         }
 
         th, td {
             padding: 15px;
-            text-align: center; /* Zorgt ervoor dat de tekst in de cellen gecentreerd is */
-            vertical-align: middle; /* Zorgt ervoor dat inhoud verticaal gecentreerd is */
+            text-align: center;
         }
 
         th {
-            background-color: #16a085; /* Groene koptekst */
+            background-color: #16a085;
             color: white;
             font-size: 1.1em;
         }
@@ -61,24 +59,20 @@
         }
 
         input[type="number"] {
-            width: 90%; /* Zorgen dat de inputvelden niet te breed zijn */
+            width: 90%;
             padding: 5px;
             margin: 0;
             border: 1px solid #7f8c8d;
             border-radius: 4px;
             font-size: 1em;
             text-align: right;
-            background-color: #2c3e50; /* Donker achtergrond voor invoervelden */
-            color: #ecf0f1; /* Lichte tekstkleur voor invoervelden */
+            background-color: #2c3e50;
+            color: #ecf0f1;
         }
 
         input[type="number"]:focus {
-            border-color: #16a085; /* Groene focuskleur */
+            border-color: #16a085;
             outline: none;
-        }
-
-        tfoot {
-            background-color: #34495e;
         }
 
         .result-box {
@@ -117,7 +111,7 @@
     <!-- Klantnaam invoer -->
     <input type="text" id="customer-name" class="customer-name" placeholder="Klantnaam" />
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Producten</th>
@@ -217,91 +211,44 @@
         const grandTotalField = document.getElementById('grand-total');
         const pinCommandField = document.getElementById('pin-command');
         const customerNameField = document.getElementById('customer-name');
-        
 
-        function formatNumber(number) {
-    // Controleer of het getal een geheel getal is
-    if (number % 1 === 0) {
-        return number.toFixed(0); // Geen decimalen als het een geheel getal is
-    }
-    return number.toFixed(2); // Gebruik 2 decimalen als het geen geheel getal is
-}
+        rows.forEach(row => {
+            const priceField = row.querySelector('.price');
+            const quantityField = row.querySelector('.quantity');
+            const totalField = row.querySelector('.total');
 
-function calculateRow(row) {
-    const price = parseFloat(row.querySelector('.price').value) || 0;
-    const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+            quantityField.addEventListener('input', () => {
+                const quantity = parseFloat(quantityField.value) || 0;
+                const price = parseFloat(priceField.value);
+                const total = price * quantity;
+                totalField.value = total.toFixed(2);
 
-    const total = price * quantity;
-    row.querySelector('.total').value = formatNumber(total);
-}
+                updateGrandTotal();
+            });
+        });
 
-function calculateGrandTotal() {
-    let grandTotal = 0;
-
-    rows.forEach(row => {
-        const total = parseFloat(row.querySelector('.total').value) || 0;
-        grandTotal += total;
-    });
-
-    grandTotalField.value = formatNumber(grandTotal);
-
-    const customerName = customerNameField.value.trim() || "Anonieme Klant";
-    pinCommandField.textContent = `/pin set ${customerName} ${formatNumber(grandTotal)}`;
-}
-
-
-// After calculating the grand total, you can store the transaction data like this:
-
-function storeTransaction() {
-    const customerName = customerNameField.value.trim() || "Anonieme Klant";
-    const grandTotal = parseFloat(grandTotalField.value) || 0;
-    const products = [];
-
-    // Loop through the rows and get the products sold
-    rows.forEach(row => {
-        const productName = row.cells[0].textContent;
-        const quantity = parseInt(row.querySelector('.quantity').value) || 0;
-        const price = parseFloat(row.querySelector('.price').value) || 0;
-        if (quantity > 0) {
-            products.push(`${productName} (x${quantity}) - €${(price * quantity).toFixed(2)}`);
-        }
-    });
-
-    // Create the transaction object
-    const transaction = {
-        customerName: customerName,
-        products: products.join(', '),
-        totalAmount: `€${grandTotal.toFixed(2)}`,
-        date: new Date().toLocaleString()
-    };
-
-    // Get current transactions from localStorage
-    const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-
-    // Push the new transaction to the list
-    transactions.push(transaction);
-
-    // Save the updated transactions list back to localStorage
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-}
-
-// Call this function when the transaction is completed
-storeTransaction();
-
-
-        function addEventListeners() {
+        function updateGrandTotal() {
+            let grandTotal = 0;
             rows.forEach(row => {
-                const quantityField = row.querySelector('.quantity');
-                quantityField.addEventListener('input', () => {
-                    calculateRow(row);
-                    calculateGrandTotal();
-                });
+                const totalField = row.querySelector('.total');
+                grandTotal += parseFloat(totalField.value) || 0;
             });
 
-            customerNameField.addEventListener('input', calculateGrandTotal);
+            grandTotalField.value = grandTotal.toFixed(2);
+            updatePinCommand();
         }
 
-        addEventListeners();
+        function updatePinCommand() {
+            const customerName = customerNameField.value.trim();
+            const amount = grandTotalField.value;
+            const pinCommand = `/pin set ${customerName} ${amount}`;
+            pinCommandField.textContent = pinCommand;
+        }
+
+        customerNameField.addEventListener('input', updatePinCommand);
     </script>
+
+    <!-- Bootstrap 5 JS (Optional for some components like modals, tooltips, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0bnOq5Dq5+8ltXyfljZK9o/Ny23V7dCxUchG5s5g2g72vH9Z" crossorigin="anonymous"></script>
 </body>
 </html>
