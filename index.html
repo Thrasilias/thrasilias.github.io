@@ -250,6 +250,45 @@ function calculateGrandTotal() {
 }
 
 
+// After calculating the grand total, you can store the transaction data like this:
+
+function storeTransaction() {
+    const customerName = customerNameField.value.trim() || "Anonieme Klant";
+    const grandTotal = parseFloat(grandTotalField.value) || 0;
+    const products = [];
+
+    // Loop through the rows and get the products sold
+    rows.forEach(row => {
+        const productName = row.cells[0].textContent;
+        const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+        const price = parseFloat(row.querySelector('.price').value) || 0;
+        if (quantity > 0) {
+            products.push(`${productName} (x${quantity}) - €${(price * quantity).toFixed(2)}`);
+        }
+    });
+
+    // Create the transaction object
+    const transaction = {
+        customerName: customerName,
+        products: products.join(', '),
+        totalAmount: `€${grandTotal.toFixed(2)}`,
+        date: new Date().toLocaleString()
+    };
+
+    // Get current transactions from localStorage
+    const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+    // Push the new transaction to the list
+    transactions.push(transaction);
+
+    // Save the updated transactions list back to localStorage
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+
+// Call this function when the transaction is completed
+storeTransaction();
+
+
         function addEventListeners() {
             rows.forEach(row => {
                 const quantityField = row.querySelector('.quantity');
