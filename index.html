@@ -218,76 +218,77 @@
         const pinCommandField = document.getElementById('pin-command');
         const customerNameField = document.getElementById('customer-name');
         
-
         function formatNumber(number) {
-    // Controleer of het getal een geheel getal is
-    if (number % 1 === 0) {
-        return number.toFixed(0); // Geen decimalen als het een geheel getal is
-    }
-    return number.toFixed(2); // Gebruik 2 decimalen als het geen geheel getal is
-}
-
-function calculateRow(row) {
-    const price = parseFloat(row.querySelector('.price').value) || 0;
-    const quantity = parseInt(row.querySelector('.quantity').value) || 0;
-
-    const total = price * quantity;
-    row.querySelector('.total').value = formatNumber(total);
-}
-
-function calculateGrandTotal() {
-    let grandTotal = 0;
-
-    rows.forEach(row => {
-        const total = parseFloat(row.querySelector('.total').value) || 0;
-        grandTotal += total;
-    });
-
-    grandTotalField.value = formatNumber(grandTotal);
-
-    const customerName = customerNameField.value.trim() || "Anonieme Klant";
-    pinCommandField.textContent = `/pin set ${customerName} ${formatNumber(grandTotal)}`;
-}
-
-
-// After calculating the grand total, you can store the transaction data like this:
-
-function storeTransaction() {
-    const customerName = customerNameField.value.trim() || "Anonieme Klant";
-    const grandTotal = parseFloat(grandTotalField.value) || 0;
-    const products = [];
-
-    // Loop through the rows and get the products sold
-    rows.forEach(row => {
-        const productName = row.cells[0].textContent;
-        const quantity = parseInt(row.querySelector('.quantity').value) || 0;
-        const price = parseFloat(row.querySelector('.price').value) || 0;
-        if (quantity > 0) {
-            products.push(`${productName} (x${quantity}) - €${(price * quantity).toFixed(2)}`);
+            if (number % 1 === 0) {
+                return number.toFixed(0);
+            }
+            return number.toFixed(2);
         }
-    });
 
-    // Create the transaction object
-    const transaction = {
-        customerName: customerName,
-        products: products.join(', '),
-        totalAmount: `€${grandTotal.toFixed(2)}`,
-        date: new Date().toLocaleString()
-    };
+        function calculateRow(row) {
+            const price = parseFloat(row.querySelector('.price').value) || 0;
+            const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+            const total = price * quantity;
+            row.querySelector('.total').value = formatNumber(total);
+        }
 
-    // Get current transactions from localStorage
-    const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        function calculateGrandTotal() {
+            let grandTotal = 0;
+            rows.forEach(row => {
+                const total = parseFloat(row.querySelector('.total').value) || 0;
+                grandTotal += total;
+            });
+            grandTotalField.value = formatNumber(grandTotal);
 
-    // Push the new transaction to the list
-    transactions.push(transaction);
+            const customerName = customerNameField.value.trim() || "Anonieme Klant";
+            pinCommandField.textContent = `/pin set ${customerName} ${formatNumber(grandTotal)}`;
+        }
 
-    // Save the updated transactions list back to localStorage
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-}
+        function storeTransaction() {
+            const customerName = customerNameField.value.trim() || "Anonieme Klant";
+            const grandTotal = parseFloat(grandTotalField.value) || 0;
+            const products = [];
 
-// Call this function when the transaction is completed
-storeTransaction();
+            // Verzamel de verkochte producten
+            rows.forEach(row => {
+                const productName = row.cells[0].textContent;
+                const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+                const price = parseFloat(row.querySelector('.price').value) || 0;
+                if (quantity > 0) {
+                    products.push(`${productName} (x${quantity}) - €${(price * quantity).toFixed(2)}`);
+                }
+            });
 
+            // Maak een transaction object
+            const transaction = {
+                customerName: customerName,
+                products: products.join(', '),
+                totalAmount: `€${grandTotal.toFixed(2)}`,
+                date: new Date().toLocaleString()
+            };
+
+            // Verzend de transactie naar Google Sheets
+            fetch('https://script.google.com/u/0/home/projects/1_o4NBj0g06Fm0AAtTv_ar4Fec6lCwRwmzbE2S2ztcuZrU5Uo5UMTTJcx/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    customerName: transaction.customerName,
+                    products: transaction.products,
+                    totalAmount: transaction.totalAmount
+                })
+            })
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                alert('Transactie succesvol toegevoegd!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Er is iets misgegaan.');
+            });
+        }
 
         function addEventListeners() {
             rows.forEach(row => {
@@ -302,6 +303,9 @@ storeTransaction();
         }
 
         addEventListeners();
+
+        // Roep de functie aan wanneer de transactie is voltooid
+        storeTransaction();
     </script>
 </body>
 </html>
