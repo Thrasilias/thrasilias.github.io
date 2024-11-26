@@ -11,7 +11,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2c3e50; /* Dark background color */
+            background-color: #2c3e50 !important; /* Dark background color */
             color: #ecf0f1; /* Light text color */
             margin: 0;
             padding: 20px;
@@ -81,7 +81,7 @@
             padding: 20px;
             background-color: #16a085;
             border-radius: 8px;
-            color: #fff;
+            color: #000000;
             font-size: 1.2em;
             font-weight: bold;
             text-align: center;
@@ -221,62 +221,41 @@
                 </tbody>
             </table>
 
-            <!-- Total Amount -->
-            <div class="result-box">
-                Totaal Bedrag: <span id="grand-total">0.00</span> EUR
-            </div>
+            <!-- Calculate Button -->
+            <button class="btn btn-success" onclick="calculateTotal()">Bereken Totaal</button>
 
-            <div class="text-center mt-4">
-                <strong>Pin Command:</strong>
-                <p id="pin-command"></p>
+            <!-- Result Box -->
+            <div id="result-box" class="result-box" style="display:none;">
+                Totaal te betalen: <span id="total-amount">0</span> Gouden Munt
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
     <script>
-        const rows = document.querySelectorAll('tbody tr');
-        const grandTotalField = document.getElementById('grand-total');
-        const pinCommandField = document.getElementById('pin-command');
-        const customerNameField = document.getElementById('customer-name');
+        function calculateTotal() {
+            const customerName = document.getElementById('customer-name').value;
+            const rows = document.querySelectorAll('#product-rows tr');
+            let total = 0;
 
-        rows.forEach(row => {
-            const priceField = row.querySelector('.price');
-            const quantityField = row.querySelector('.quantity');
-            const totalField = row.querySelector('.total');
-
-            quantityField.addEventListener('input', () => {
-                const quantity = parseFloat(quantityField.value) || 0;
-                const price = parseFloat(priceField.value);
-                const total = price * quantity;
-                totalField.value = total.toFixed(2);
-
-                updateGrandTotal();
-            });
-        });
-
-        function updateGrandTotal() {
-            let grandTotal = 0;
             rows.forEach(row => {
-                const totalField = row.querySelector('.total');
-                grandTotal += parseFloat(totalField.value) || 0;
+                const price = parseFloat(row.querySelector('.price').value);
+                const quantity = parseInt(row.querySelector('.quantity').value);
+                const totalCell = row.querySelector('.total');
+                const productTotal = price * quantity;
+
+                totalCell.value = productTotal;
+                total += productTotal;
             });
 
-            grandTotalField.textContent = grandTotal.toFixed(2);
-            updatePinCommand();
+            if (total > 0) {
+                document.getElementById('result-box').style.display = 'block';
+                document.getElementById('total-amount').textContent = total.toLocaleString();
+            }
         }
-
-        function updatePinCommand() {
-            const customerName = customerNameField.value.trim();
-            const amount = grandTotalField.textContent;
-            const pinCommand = `/pin set ${customerName} ${amount}`;
-            pinCommandField.textContent = pinCommand;
-        }
-
-        customerNameField.addEventListener('input', updatePinCommand);
     </script>
-
 </body>
 </html>
