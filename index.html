@@ -11,8 +11,8 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #f4f6f7;
+            color: #333;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -24,19 +24,20 @@
 
         h1 {
             text-align: center;
-            color: #ecf0f1;
+            color: #2c3e50;
+            margin-bottom: 30px;
         }
 
         p {
             text-align: center;
-            color: #bdc3c7;
+            color: #7f8c8d;
             margin-bottom: 20px;
         }
 
         .table {
-            background: #34495e;
+            background: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         th, td {
@@ -51,7 +52,7 @@
         }
 
         td {
-            border-bottom: 1px solid #7f8c8d;
+            border-bottom: 1px solid #ecf0f1;
         }
 
         td:last-child {
@@ -59,15 +60,15 @@
         }
 
         input[type="number"] {
-            width: 90%;
-            padding: 5px;
+            width: 100%;
+            padding: 8px;
             margin: 0;
             border: 1px solid #7f8c8d;
             border-radius: 4px;
             font-size: 1em;
             text-align: right;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #ecf0f1;
+            color: #333;
         }
 
         input[type="number"]:focus {
@@ -76,16 +77,15 @@
         }
 
         .result-box {
-            margin: 20px auto;
-            max-width: 600px;
-            text-align: center;
-            background-color: #1abc9c;
-            border: 1px solid #16a085;
-            border-radius: 5px;
-            padding: 15px;
-            font-size: 1.2em;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #16a085;
+            border-radius: 8px;
             color: #fff;
+            font-size: 1.2em;
             font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .result-box span {
@@ -93,121 +93,151 @@
         }
 
         .customer-name {
-            padding: 5px;
-            font-size: 1em;
+            padding: 10px;
+            font-size: 1.1em;
             border: 1px solid #7f8c8d;
             border-radius: 4px;
-            background-color: #34495e;
-            color: #ecf0f1;
-            width: 90%;
+            background-color: #ecf0f1;
+            color: #333;
+            width: 100%;
             margin-bottom: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #16a085;
+            color: white;
+            font-size: 1.5em;
+            padding: 15px;
+        }
+
+        .card-body {
+            padding: 30px;
         }
     </style>
 </head>
 <body>
-    <h1>VOC Vitamine Winkel</h1>
-    <p>Vul in hoeveel de klant wil kopen. De totaalprijs wordt automatisch berekend en het juiste commando verschijnt onderaan.</p>
 
-    <!-- Klantnaam invoer -->
-    <input type="text" id="customer-name" class="customer-name" placeholder="Klantnaam" />
+    <!-- Main Card -->
+    <div class="card" style="max-width: 900px; width: 100%;">
+        <div class="card-header text-center">
+            VOC Vitamine Winkel
+        </div>
+        <div class="card-body">
+            <p class="text-center">Vul in hoeveel de klant wil kopen. De totaalprijs wordt automatisch berekend en het juiste commando verschijnt onderaan.</p>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Producten</th>
-                <th>Prijs per stuk</th>
-                <th>Aantal (klant)</th>
-                <th>Totaal</th>
-            </tr>
-        </thead>
-        <tbody id="product-rows">
-            <tr>
-                <td>Vitamine A</td>
-                <td><input type="number" class="price" value="450" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Vitamine B</td>
-                <td><input type="number" class="price" value="700" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Vitamine C</td>
-                <td><input type="number" class="price" value="900" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Vitamine D</td>
-                <td><input type="number" class="price" value="1.500" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Vitamine E</td>
-                <td><input type="number" class="price" value="4.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Vitamine F</td>
-                <td><input type="number" class="price" value="5.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Medicijn</td>
-                <td><input type="number" class="price" value="35.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Golden Appels (PER STACK)</td>
-                <td><input type="number" class="price" value="20.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Gouden Wortels</td>
-                <td><input type="number" class="price" value="20.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Speed Boots 0.01</td>
-                <td><input type="number" class="price" value="30.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Speed Boots 0.02</td>
-                <td><input type="number" class="price" value="40.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-            <tr>
-                <td>Speed Boots 0.03</td>
-                <td><input type="number" class="price" value="50.000" readonly></td>
-                <td><input type="number" class="quantity" value="0" min="0"></td>
-                <td><input type="number" class="total" value="0" readonly></td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3"><strong>Totaal te betalen</strong></td>
-                <td><input type="number" id="grand-total" value="0" readonly></td>
-            </tr>
-        </tfoot>
-    </table>
+            <!-- Klantnaam invoer -->
+            <input type="text" id="customer-name" class="customer-name" placeholder="Klantnaam" />
 
-    <div class="result-box">
-        Geef dit commando in: <span id="pin-command">/pin set (userName) (bedrag)</span>
+            <!-- Table for Products -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Producten</th>
+                        <th>Prijs per stuk</th>
+                        <th>Aantal (klant)</th>
+                        <th>Totaal</th>
+                    </tr>
+                </thead>
+                <tbody id="product-rows">
+                    <!-- Product Rows here -->
+                    <tr>
+                        <td>Vitamine A</td>
+                        <td><input type="number" class="price" value="450" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Vitamine B</td>
+                        <td><input type="number" class="price" value="700" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Vitamine C</td>
+                        <td><input type="number" class="price" value="900" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Vitamine D</td>
+                        <td><input type="number" class="price" value="1.500" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Vitamine E</td>
+                        <td><input type="number" class="price" value="4.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Vitamine F</td>
+                        <td><input type="number" class="price" value="5.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Medicijn</td>
+                        <td><input type="number" class="price" value="35.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Golden Appels (PER STACK)</td>
+                        <td><input type="number" class="price" value="20.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Gouden Wortels</td>
+                        <td><input type="number" class="price" value="20.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Speed Boots 0.01</td>
+                        <td><input type="number" class="price" value="30.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Speed Boots 0.02</td>
+                        <td><input type="number" class="price" value="40.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Speed Boots 0.03</td>
+                        <td><input type="number" class="price" value="50.000" readonly></td>
+                        <td><input type="number" class="quantity" value="0" min="0"></td>
+                        <td><input type="number" class="total" value="0" readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Total Amount -->
+            <div class="result-box">
+                Totaal Bedrag: <span id="grand-total">0.00</span> EUR
+            </div>
+
+            <div class="text-center mt-4">
+                <strong>Pin Command:</strong>
+                <p id="pin-command"></p>
+            </div>
+        </div>
     </div>
 
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        const rows = document.querySelectorAll('#product-rows tr');
+        const rows = document.querySelectorAll('tbody tr');
         const grandTotalField = document.getElementById('grand-total');
         const pinCommandField = document.getElementById('pin-command');
         const customerNameField = document.getElementById('customer-name');
@@ -234,13 +264,13 @@
                 grandTotal += parseFloat(totalField.value) || 0;
             });
 
-            grandTotalField.value = grandTotal.toFixed(2);
+            grandTotalField.textContent = grandTotal.toFixed(2);
             updatePinCommand();
         }
 
         function updatePinCommand() {
             const customerName = customerNameField.value.trim();
-            const amount = grandTotalField.value;
+            const amount = grandTotalField.textContent;
             const pinCommand = `/pin set ${customerName} ${amount}`;
             pinCommandField.textContent = pinCommand;
         }
@@ -248,7 +278,5 @@
         customerNameField.addEventListener('input', updatePinCommand);
     </script>
 
-    <!-- Bootstrap 5 JS (Optional for some components like modals, tooltips, etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
