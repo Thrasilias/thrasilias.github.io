@@ -163,15 +163,18 @@
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP-fout: ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const result = await response.json();
-    console.log('Succes:', result);
+    console.log('Success:', result);
+    alert('Transactie succesvol verwerkt!');
   } catch (error) {
     console.error('Error:', error);
+    alert(`Fout bij het verwerken van de transactie: ${error.message}`);
   }
 }
+
 
 
         function storeTransaction() {
