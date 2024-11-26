@@ -267,27 +267,26 @@
                 date: new Date().toLocaleString()
             };
 
-            // Verzend de transactie naar Google Sheets
-            fetch('https://script.google.com/u/0/home/projects/1_o4NBj0g06Fm0AAtTv_ar4Fec6lCwRwmzbE2S2ztcuZrU5Uo5UMTTJcx/edit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    customerName: transaction.customerName,
-                    products: transaction.products,
-                    totalAmount: transaction.totalAmount
-                })
+        fetch('https://script.google.com/macros/s/AKfycbwEYzZVIiQnCDCk3Wco-3idrvWGP3q-TA4g-nrR_9lhJerQ29aDziHw6MTbGcWEJRDBEQ/exec', {
+          method: 'POST',
+          headers: {
+             'Content-Type': 'application/json',
+          },
+            body: JSON.stringify({
+                customerName: transaction.customerName,
+                products: transaction.products,
+                totalAmount: transaction.totalAmount
             })
-            .then(response => response.text())
-            .then(result => {
-                console.log(result);
-                alert('Transactie succesvol toegevoegd!');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Er is iets misgegaan.');
-            });
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            alert('Transactie succesvol toegevoegd!');
+        })
+        .catch(error => {
+           console.error('Error:', error);
+           alert('Er is iets misgegaan.');
+        });
         }
 
         function addEventListeners() {
