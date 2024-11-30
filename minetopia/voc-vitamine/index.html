@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Verkoop Systeem</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 20px;
+    }
+    .container {
+      max-width: 1200px;
+    }
+    .product-table td {
+      vertical-align: middle;
+    }
+    .quantity-input {
+      width: 80px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="mb-4">Product Verkoop Systeem</h1>
+
+    <!-- Klant en Personeelslid Invoer -->
+    <div class="row mb-4">
+      <div class="col">
+        <input type="text" class="form-control" id="customer-name" placeholder="Voer klantnaam in">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" id="staff-name" placeholder="Voer personeelslid naam in">
+      </div>
+    </div>
+
+    <!-- Product Tabel -->
+    <table class="table table-bordered product-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Prijs per stuk</th>
+          <th>Inkoop prijs</th>
+          <th>Prijs per 64</th>
+          <th>Totaal verkocht</th>
+          <th>Stacks verkocht</th>
+          <th>Hoeveelheid</th>
+          <th>Prijs</th>
+        </tr>
+      </thead>
+      <tbody id="product-table-body">
+        <!-- Dynamisch ingevoerde productregels komen hier -->
+      </tbody>
+    </table>
+
+    <!-- Totale bedragen -->
+    <div class="row mb-4">
+      <div class="col">
+        <h5>Totale opbrengst:</h5>
+        <p id="total-revenue">€ 0.00</p>
+      </div>
+      <div class="col">
+        <h5>Klant betalen:</h5>
+        <p id="customer-payment">€ 0.00</p>
+      </div>
+      <div class="col">
+        <h5>Inkoop:</h5>
+        <p id="total-cost">€ 0.00</p>
+      </div>
+      <div class="col">
+        <h5>Winst:</h5>
+        <p id="profit">€ 0.00</p>
+      </div>
+    </div>
+
+    <!-- Betalen Knop -->
+    <button class="btn btn-primary" id="pay-button">Betalen</button>
+
+    <!-- Betalingscommando -->
+    <div class="mt-3">
+      <h5>Betalingscommando:</h5>
+      <textarea class="form-control" id="generated-command" rows="3" readonly></textarea>
+    </div>
+
+    <!-- Verkochte Producten per Personeelslid -->
+    <h3 class="mt-4">Verkochte Producten per Personeelslid</h3>
+    <div id="staff-sales-list"></div>
+
+    <!-- Transacties -->
+    <h3 class="mt-4">Transacties</h3>
+    <div id="transactions-list"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedData = JSON.parse(localStorage.getItem("products")) || [];
+      const savedStaff = JSON.parse(localStorage.getItem("staffSales")) || {};
+      const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+      const products = savedData.length
+        ? savedData
+        : [
+            { name: "Vitamine A", pricePerUnit: 450, pricePer64: 28800, sold: 0, cost: 0 },
+            { name: "Vitamine B", pricePerUnit: 700, pricePer64: 44800, sold: 0, cost: 0 },
+            { name: "Vitamine C", pricePerUnit: 900, pricePer64: 57600, sold: 0, cost: 0 },
+          ];
+
+      const staffSales = savedStaff;
+      const savedTransactionsList = savedTransactions;
+
+      const renderTable = () => {
+        const tableBody = document.getElementById("product-table-body");
+        tableBody.innerHTML = "";
+
+        products.forEach((product, index) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${product.name}</td>
+            <td>€ ${product.pricePerUnit.toFixed(2)}</td>
+            <td>€ ${product.cost.toFixed(2)}</td>
+            <td>€ ${product.pricePer64.toFixed(2)}</td>
+            <td id="total-sold-${index}">${product.sold}</td>
+            <td>${Math.floor(product.sold / 64)}</td>
+            <td>
+              <input 
+                type="number" 
+                class="form-control form-control-sm quantity-input" 
+                min="0" 
+                id="input-quantity-${index}" 
+                placeholder="Aantal" 
+                value="0" 
+              />
+            </td>
+            <td id="price-${index}">€ 0.00</td>
+          `;
+
+          row.querySelector(`#input-quantity-${index}`).addEventListener("input", (e) => {
+            const quantity = parseInt(e.target.value) || 0;
+            const totalPrice = quantity * product.pricePerUnit;
+            document.getElementById(`price-${index}`).textContent = `€ ${totalPrice.toFixed(2)}`;
+            updateTotals();
+          });
+
+          tableBody.appendChild(row);
+        });
+      };
+
+      const updateTotals = () => {
+        let totalRevenue = 0;
+        let totalCost = 0;
+
+        document.querySelectorAll(".quantity-input").forEach((input, index) => {
+          const quantity = parseInt(input.value) || 0;
+          const product = products[index];
+
+          totalRevenue += quantity * product.pricePerUnit;
+          totalCost += quantity * product.cost;
+        });
+
+        const profit = totalRevenue - totalCost;
+
+        document.getElementById("total-revenue").textContent = `€ ${totalRevenue.toFixed(2)}`;
+        document.getElementById("customer-payment").textContent = `€ ${totalRevenue.toFixed(2)}`;
+        document.getElementById("total-cost").textContent = `€ ${totalCost.toFixed(2)}`;
+        document.getElementById("profit").textContent = `€ ${profit.toFixed(2)}`;
+      };
+
+      const renderStaffSales = () => {
+        const staffSalesList = document.getElementById("staff-sales-list");
+        staffSalesList.innerHTML = "";
+
+        for (const staff in staffSales) {
+          const sales = Object.entries(staffSales[staff])
+            .filter(([_, quantity]) => quantity > 0)
+            .map(
+              ([product, quantity]) =>
+                `<li>${product}: <strong>${quantity} verkocht</strong></li>`
+            )
+            .join("");
+
+          if (sales) {
+            const staffItem = document.createElement("div");
+            staffItem.className = "mb-3";
+
+            staffItem.innerHTML = `
+              <h5>${staff}</h5>
+              <ul class="list-group">
+                ${sales}
+              </ul>
+            `;
+            staffSalesList.appendChild(staffItem);
+          }
+        }
+      };
+
+      const renderTransactions = () => {
+        const transactionList = document.createElement("ul");
+        transactionList.className = "list-group mt-3";
+
+        savedTransactionsList.forEach((transaction) => {
+          const transactionItem = document.createElement("li");
+          transactionItem.className = "list-group-item";
+          transactionItem.textContent = `Personeelslid: ${transaction.staffName} - ${transaction.productName} - Verdiend: €${transaction.earned.toFixed(2)}`;
+          transactionList.appendChild(transactionItem);
+        });
+
+        document.querySelector(".container").appendChild(transactionList);
+      };
+
+      const saveData = () => {
+        localStorage.setItem("products", JSON.stringify(products));
+        localStorage.setItem("staffSales", JSON.stringify(staffSales));
+        localStorage.setItem("transactions", JSON.stringify(savedTransactionsList));
+      };
+
+      document.getElementById("pay-button").addEventListener("click", () => {
+        const customerName = document.getElementById("customer-name").value.trim();
+        const staffName = document.getElementById("staff-name").value.trim();
+
+        if (customerName === "") {
+          alert("Voer een klantnaam in!");
+          return;
+        }
+
+        if (staffName === "") {
+          alert("Voer de naam van het personeelslid in!");
+          return;
+        }
+
+        let totalRevenue = 0;
+
+        document.querySelectorAll(".quantity-input").forEach((input, index) => {
+          const quantity = parseInt(input.value) || 0;
+          const product = products[index];
+          product.sold += quantity;
+
+          if (quantity > 0) {
+            totalRevenue += quantity * product.pricePerUnit;
+
+            if (!staffSales[staffName]) {
+              staffSales[staffName] = {};
+            }
+            if (!staffSales[staffName][product.name]) {
+              staffSales[staffName][product.name] = 0;
+            }
+            staffSales[staffName][product.name] += quantity;
+          }
+        });
+
+        savedTransactionsList.push({
+          staffName,
+          productName: "Totale Verkoop",
+          earned: totalRevenue,
+        });
+
+        saveData();
+        renderStaffSales();
+        renderTable();
+        updateTotals();
+        document.getElementById("generated-command").value = `/pin set ${customerName} €${totalRevenue.toFixed(2)}`;
+
+        // Reset input fields after payment
+        document.getElementById("customer-name").value = "";
+        document.getElementById("staff-name").value = "";
+        document.querySelectorAll(".quantity-input").forEach(input => input.value = 0);
+        document.getElementById("generated-command").value = "";
+      });
+
+      renderTable();
+      renderStaffSales();
+    });
+  </script>
+
+</body>
+</html>
