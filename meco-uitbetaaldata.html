@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betalingsschema MECO - Elke 4 weken</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        h1 {
+            color: #003087;
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #003087;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f8fbff;
+        }
+        .editable {
+            background-color: #fff9e6;
+            cursor: pointer;
+        }
+        .status {
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .uitbetaald { background-color: #d4edda; color: #155724; }
+        .voldaan    { background-color: #cce5ff; color: #004085; }
+        .open       { background-color: #fff3cd; color: #856404; }
+        button {
+            padding: 10px 20px;
+            background: #003087;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #002266; }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">
+            <h2 style="color:#003087; margin:0;">MECO</h2>
+            <h1>Distributie B.V.</h1>
+        </div>
+        <h2>Betalingsschema - Elke 4 weken</h2>
+    </header>
+
+    <table id="schemaTable">
+        <thead>
+            <tr>
+                <th>Nr.</th>
+                <th>Datum</th>
+                <th>Dag van de week</th>
+                <th>Dagen vanaf 7 mei 2026</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td class="editable">24 april 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">-</td>
+                <td><span class="status uitbetaald" onclick="toggleStatus(this)">UITBETAALD</span></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td class="editable">22 mei 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">15</td>
+                <td><span class="status voldaan" onclick="toggleStatus(this)">VOLDAAN</span></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td class="editable">19 juni 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">43</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td class="editable">17 juli 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">71</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td class="editable">14 augustus 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">99</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td class="editable">11 september 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">127</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td class="editable">9 oktober 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">155</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td class="editable">6 november 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">183</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td class="editable">4 december 2026</td>
+                <td>Vrijdag</td>
+                <td class="editable">211</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td class="editable">1 januari 2027</td>
+                <td>Vrijdag</td>
+                <td class="editable">239</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td class="editable">29 februari 2027</td>
+                <td>Vrijdag</td>
+                <td class="editable">295</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td class="editable">26 maart 2027</td>
+                <td>Vrijdag</td>
+                <td class="editable">323</td>
+                <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="controls">
+        <button onclick="addRow()">+ Nieuwe regel toevoegen</button>
+        <button onclick="exportToCSV()">📥 Exporteer als CSV</button>
+        <button onclick="printPage()">🖨️ Printen / PDF maken</button>
+    </div>
+
+    <p style="text-align: center; color: #555; margin-top: 30px;">
+        Koningsweg 219, 7102 DT Winterswijk
+    </p>
+</div>
+
+<script>
+    // Dubbelklik om data te bewerken
+    document.querySelectorAll('.editable').forEach(cell => {
+        cell.addEventListener('dblclick', function() {
+            const oldValue = this.innerText;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = oldValue;
+            this.innerHTML = '';
+            this.appendChild(input);
+            input.focus();
+            input.addEventListener('blur', () => this.innerText = input.value || oldValue);
+            input.addEventListener('keypress', e => { if (e.key === 'Enter') input.blur(); });
+        });
+    });
+
+    // Status wisselen
+    function toggleStatus(el) {
+        const statuses = [
+            {text: "OPEN", class: "open"},
+            {text: "VOLDAAN", class: "voldaan"},
+            {text: "UITBETAALD", class: "uitbetaald"}
+        ];
+        
+        let currentIndex = statuses.findIndex(s => s.text === el.innerText);
+        currentIndex = (currentIndex + 1) % statuses.length;
+        
+        el.innerText = statuses[currentIndex].text;
+        el.className = `status ${statuses[currentIndex].class}`;
+    }
+
+    function addRow() {
+        const tbody = document.querySelector('#schemaTable tbody');
+        const lastRow = tbody.lastElementChild;
+        const lastNr = parseInt(lastRow.cells[0].innerText) || 13;
+        
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${lastNr + 1}</td>
+            <td class="editable">Nieuwe datum</td>
+            <td class="editable">Vrijdag</td>
+            <td class="editable">-</td>
+            <td><span class="status open" onclick="toggleStatus(this)">OPEN</span></td>
+        `;
+        
+        // Nieuwe editable cellen
+        row.querySelectorAll('.editable').forEach(cell => {
+            cell.addEventListener('dblclick', function() {
+                const oldValue = this.innerText;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = oldValue;
+                this.innerHTML = '';
+                this.appendChild(input);
+                input.focus();
+                input.addEventListener('blur', () => this.innerText = input.value || oldValue);
+            });
+        });
+    }
+
+    function exportToCSV() {
+        let csv = "Nr.,Datum,Dag van de week,Dagen vanaf 7 mei 2026,Status\n";
+        document.querySelectorAll("#schemaTable tbody tr").forEach(row => {
+            const cells = row.querySelectorAll("td");
+            const status = cells[4].querySelector('.status').innerText;
+            csv += `${cells[0].innerText},${cells[1].innerText},${cells[2].innerText},${cells[3].innerText},${status}\n`;
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'MECO_Betalingsschema.csv';
+        link.click();
+    }
+
+    function printPage() {
+        window.print();
+    }
+</script>
+
+</body>
+</html>
